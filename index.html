@@ -7,11 +7,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #2563eb;
-            --secondary-color: #1e40af;
+            --primary-color: #059669;
+            --primary-dark: #047857;
+            --primary-light: #10b981;
+            --secondary-color: #1f2937;
+            --accent-color: #f59e0b;
         }
 
         * {
@@ -24,17 +27,48 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            background: linear-gradient(180deg, #faf8f6 0%, #f5f3f0 100%);
+            min-height: 100vh;
         }
 
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        h1, h2, h3, .serif-heading {
+            font-family: 'DM Serif Display', serif;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+        }
+
+        .hero-bg {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            top: -100px;
+            right: -100px;
+        }
+
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.06) 0%, transparent 70%);
+            border-radius: 50%;
+            bottom: -50px;
+            left: 50px;
         }
 
         input:focus, textarea:focus, select:focus {
             outline: none;
-            ring: 2px;
-            ring-color: var(--primary-color);
             border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.08);
         }
 
         .file-upload-wrapper {
@@ -52,42 +86,76 @@
             align-items: center;
             justify-content: center;
             gap: 12px;
-            padding: 20px;
+            padding: 32px 24px;
             border: 2px dashed #d1d5db;
-            border-radius: 12px;
-            background: #f9fafb;
+            border-radius: 16px;
+            background: #f9f8f7;
             cursor: pointer;
             transition: all 0.3s ease;
         }
         .file-upload-label:hover {
             border-color: var(--primary-color);
-            background: #f0f7ff;
+            background: rgba(5, 150, 105, 0.04);
         }
         .file-upload-label.has-file {
-            border-color: #10b981;
-            background: #f0fdf4;
+            border-color: var(--primary-color);
+            background: rgba(5, 150, 105, 0.08);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        .animate-fadeIn {
-            animation: fadeIn 0.6s ease-out;
+
+        @keyframes fadeInStagger {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-title {
+            animation: slideUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            opacity: 0;
+        }
+
+        .hero-subtitle {
+            animation: slideUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s forwards;
+            opacity: 0;
+        }
+
+        .hero-features {
+            animation: slideUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards;
+            opacity: 0;
+        }
+
+        .form-card {
+            animation: fadeInStagger 0.7s ease-out 0.3s forwards;
+            opacity: 0;
         }
 
         .progress-bar {
-            height: 6px;
+            height: 4px;
             background: #e5e7eb;
             border-radius: 10px;
             overflow: hidden;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
         }
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-light) 100%);
             width: 0%;
-            transition: width 0.3s ease;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .question-group {
@@ -95,9 +163,91 @@
         }
         .question-group.active {
             display: block;
+            animation: fadeInStagger 0.6s ease-out;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 0.875rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            color: #6b7280;
+            padding: 0.875rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            color: #1f2937;
+            background: #f3f4f6;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            font-size: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            background: #ffffff;
+            color: #1f2937;
+        }
+
+        .input-field::placeholder {
+            color: #9ca3af;
+        }
+
+        .question-label {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--primary-color);
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .question-title {
+            font-size: clamp(1.75rem, 5vw, 2.5rem);
+            color: #1f2937;
+            margin-bottom: 0.75rem;
+            line-height: 1.2;
+        }
+
+        .question-description {
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
         }
 
         @media (max-width: 768px) {
+            .question-title {
+                font-size: 1.5rem;
+            }
+
             .hero-title {
                 font-size: 2rem;
             }
@@ -109,31 +259,32 @@
                 extend: {
                     fontFamily: {
                         sans: ['Inter', 'system-ui', 'sans-serif'],
+                        serif: ['DM Serif Display', 'serif'],
                     }
                 }
             }
         }
     </script>
 </head>
-<body class="antialiased bg-gray-50">
+<body class="antialiased">
 
     <!-- Hero Header -->
-    <div class="gradient-bg py-12 px-4 text-white">
-        <div class="max-w-3xl mx-auto text-center">
-            <h1 class="hero-title text-4xl md:text-5xl font-bold mb-4 animate-fadeIn">
+    <div class="hero-bg py-16 px-4 text-white relative">
+        <div class="max-w-3xl mx-auto text-center relative z-10">
+            <h1 class="hero-title font-serif text-4xl md:text-5xl mb-4">
                 Let's Build Your Website
             </h1>
-            <p class="text-xl text-white/90 mb-6 animate-fadeIn">
-                Just 6 quick questions. We'll handle the rest.
+            <p class="hero-subtitle text-xl text-emerald-100 mb-8 leading-relaxed">
+                Six simple questions. One beautiful site.
             </p>
-            <div class="flex items-center justify-center gap-3 text-sm">
+            <div class="hero-features flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-emerald-100">
                 <div class="flex items-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
-                    <span>Takes 5 minutes</span>
+                    <span>5 minutes</span>
                 </div>
-                <span class="text-white/50">•</span>
+                <span class="hidden sm:inline text-emerald-700">•</span>
                 <div class="flex items-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -145,59 +296,55 @@
     </div>
 
     <!-- Main Form -->
-    <div class="max-w-3xl mx-auto px-4 py-8 md:py-12">
+    <div class="max-w-2xl mx-auto px-4 py-12 md:py-16">
 
         <!-- Progress Bar -->
         <div class="progress-bar">
             <div class="progress-fill" id="progressBar"></div>
         </div>
 
-        <div class="bg-white rounded-2xl shadow-xl p-6 md:p-10 animate-fadeIn">
+        <div class="bg-white rounded-2xl shadow-lg p-8 md:p-12 form-card">
 
             <form id="intakeForm" class="space-y-8">
 
                 <!-- Question 1: Business Name -->
                 <div class="question-group active" data-question="1">
-                    <div class="mb-6">
-                        <span class="text-sm font-semibold text-purple-600">QUESTION 1 OF 6</span>
-                        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mt-2 mb-3">
-                            What's your business called?
-                        </h2>
-                        <p class="text-gray-600">This will be the main headline on your site</p>
+                    <div class="mb-8">
+                        <span class="question-label">Question 1 of 6</span>
+                        <h2 class="question-title">What's your business called?</h2>
+                        <p class="question-description">This will be the main headline on your site</p>
                     </div>
                     <input
                         type="text"
                         id="businessName"
-                        class="w-full px-5 py-4 text-lg border-2 border-gray-300 rounded-xl transition"
+                        class="input-field mb-6"
                         placeholder="e.g., Joe's Landscaping"
                         required
                     >
-                    <button type="button" onclick="nextQuestion(2)" class="mt-6 bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition shadow-lg">
+                    <button type="button" onclick="nextQuestion(2)" class="btn-primary w-full">
                         Continue →
                     </button>
                 </div>
 
                 <!-- Question 2: What They Do -->
                 <div class="question-group" data-question="2">
-                    <div class="mb-6">
-                        <span class="text-sm font-semibold text-purple-600">QUESTION 2 OF 6</span>
-                        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mt-2 mb-3">
-                            What does your business do?
-                        </h2>
-                        <p class="text-gray-600">Keep it simple - one sentence is perfect</p>
+                    <div class="mb-8">
+                        <span class="question-label">Question 2 of 6</span>
+                        <h2 class="question-title">What does your business do?</h2>
+                        <p class="question-description">Keep it simple - one sentence is perfect</p>
                     </div>
                     <textarea
                         id="businessDescription"
                         rows="4"
-                        class="w-full px-5 py-4 text-lg border-2 border-gray-300 rounded-xl transition resize-none"
+                        class="input-field resize-none mb-6"
                         placeholder="e.g., We handle tough landscaping jobs other companies won't touch - overgrown yards, steep slopes, and emergency cleanups."
                         required
                     ></textarea>
                     <div class="flex gap-3 mt-6">
-                        <button type="button" onclick="prevQuestion(1)" class="text-gray-600 hover:text-gray-900 px-6 py-4 rounded-xl font-semibold transition">
+                        <button type="button" onclick="prevQuestion(1)" class="btn-secondary flex-1">
                             ← Back
                         </button>
-                        <button type="button" onclick="nextQuestion(3)" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition shadow-lg">
+                        <button type="button" onclick="nextQuestion(3)" class="btn-primary flex-1">
                             Continue →
                         </button>
                     </div>
@@ -205,41 +352,39 @@
 
                 <!-- Question 3: Main Services -->
                 <div class="question-group" data-question="3">
-                    <div class="mb-6">
-                        <span class="text-sm font-semibold text-purple-600">QUESTION 3 OF 6</span>
-                        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mt-2 mb-3">
-                            What are your 3 main services?
-                        </h2>
-                        <p class="text-gray-600">Don't overthink it - just your top 3 things</p>
+                    <div class="mb-8">
+                        <span class="question-label">Question 3 of 6</span>
+                        <h2 class="question-title">What are your 3 main services?</h2>
+                        <p class="question-description">Don't overthink it - just your top 3 things</p>
                     </div>
-                    <div class="space-y-4">
+                    <div class="space-y-4 mb-6">
                         <input
                             type="text"
                             id="service1"
-                            class="w-full px-5 py-4 text-lg border-2 border-gray-300 rounded-xl transition"
+                            class="input-field"
                             placeholder="Service 1: e.g., Overgrown lot clearing"
                             required
                         >
                         <input
                             type="text"
                             id="service2"
-                            class="w-full px-5 py-4 text-lg border-2 border-gray-300 rounded-xl transition"
+                            class="input-field"
                             placeholder="Service 2: e.g., Difficult terrain work"
                             required
                         >
                         <input
                             type="text"
                             id="service3"
-                            class="w-full px-5 py-4 text-lg border-2 border-gray-300 rounded-xl transition"
+                            class="input-field"
                             placeholder="Service 3: e.g., Emergency storm cleanup"
                             required
                         >
                     </div>
                     <div class="flex gap-3 mt-6">
-                        <button type="button" onclick="prevQuestion(2)" class="text-gray-600 hover:text-gray-900 px-6 py-4 rounded-xl font-semibold transition">
+                        <button type="button" onclick="prevQuestion(2)" class="btn-secondary flex-1">
                             ← Back
                         </button>
-                        <button type="button" onclick="nextQuestion(4)" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition shadow-lg">
+                        <button type="button" onclick="nextQuestion(4)" class="btn-primary flex-1">
                             Continue →
                         </button>
                     </div>
@@ -247,25 +392,23 @@
 
                 <!-- Question 4: Contact Phone -->
                 <div class="question-group" data-question="4">
-                    <div class="mb-6">
-                        <span class="text-sm font-semibold text-purple-600">QUESTION 4 OF 6</span>
-                        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mt-2 mb-3">
-                            Best phone number to reach you?
-                        </h2>
-                        <p class="text-gray-600">This will be on your website for customer inquiries</p>
+                    <div class="mb-8">
+                        <span class="question-label">Question 4 of 6</span>
+                        <h2 class="question-title">Best phone number to reach you?</h2>
+                        <p class="question-description">This will be on your website for customer inquiries</p>
                     </div>
                     <input
                         type="tel"
                         id="businessPhone"
-                        class="w-full px-5 py-4 text-lg border-2 border-gray-300 rounded-xl transition"
+                        class="input-field mb-6"
                         placeholder="(555) 555-5555"
                         required
                     >
                     <div class="flex gap-3 mt-6">
-                        <button type="button" onclick="prevQuestion(3)" class="text-gray-600 hover:text-gray-900 px-6 py-4 rounded-xl font-semibold transition">
+                        <button type="button" onclick="prevQuestion(3)" class="btn-secondary flex-1">
                             ← Back
                         </button>
-                        <button type="button" onclick="nextQuestion(5)" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition shadow-lg">
+                        <button type="button" onclick="nextQuestion(5)" class="btn-primary flex-1">
                             Continue →
                         </button>
                     </div>
@@ -273,14 +416,12 @@
 
                 <!-- Question 5: Logo -->
                 <div class="question-group" data-question="5">
-                    <div class="mb-6">
-                        <span class="text-sm font-semibold text-purple-600">QUESTION 5 OF 6</span>
-                        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mt-2 mb-3">
-                            Do you have a logo?
-                        </h2>
-                        <p class="text-gray-600">If yes, upload it. If not, we'll use your business name instead - both work great!</p>
+                    <div class="mb-8">
+                        <span class="question-label">Question 5 of 6</span>
+                        <h2 class="question-title">Do you have a logo?</h2>
+                        <p class="question-description">If yes, upload it. If not, we'll use your business name instead—both work great!</p>
                     </div>
-                    <div class="file-upload-wrapper">
+                    <div class="file-upload-wrapper mb-6">
                         <input type="file" id="logoFile" accept="image/*">
                         <label for="logoFile" id="logoLabel" class="file-upload-label">
                             <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -292,40 +433,38 @@
                             </div>
                         </label>
                     </div>
-                    <div id="logoPreview" class="mt-4 hidden text-center">
+                    <div id="logoPreview" class="mt-4 mb-6 hidden text-center">
                         <img id="logoPreviewImg" src="" alt="Logo preview" class="max-h-32 mx-auto rounded-lg shadow-md">
                     </div>
                     <div class="flex gap-3 mt-6">
-                        <button type="button" onclick="prevQuestion(4)" class="text-gray-600 hover:text-gray-900 px-6 py-4 rounded-xl font-semibold transition">
+                        <button type="button" onclick="prevQuestion(4)" class="btn-secondary flex-1">
                             ← Back
                         </button>
-                        <button type="button" onclick="nextQuestion(6)" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition shadow-lg">
-                            Continue (Skip Logo) →
+                        <button type="button" onclick="nextQuestion(6)" class="btn-primary flex-1">
+                            Continue →
                         </button>
                     </div>
                 </div>
 
                 <!-- Question 6: Anything Else -->
                 <div class="question-group" data-question="6">
-                    <div class="mb-6">
-                        <span class="text-sm font-semibold text-purple-600">QUESTION 6 OF 6 - ALMOST DONE!</span>
-                        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mt-2 mb-3">
-                            Anything else we should know?
-                        </h2>
-                        <p class="text-gray-600">Special requests, brand colors, inspiration sites, deadline - or leave it blank, totally fine!</p>
+                    <div class="mb-8">
+                        <span class="question-label">Question 6 of 6 — Almost Done!</span>
+                        <h2 class="question-title">Anything else we should know?</h2>
+                        <p class="question-description">Special requests, brand colors, inspiration sites, deadline—or leave it blank, totally fine!</p>
                     </div>
                     <textarea
                         id="additionalInfo"
                         rows="5"
-                        class="w-full px-5 py-4 text-lg border-2 border-gray-300 rounded-xl transition resize-none"
+                        class="input-field resize-none mb-6"
                         placeholder="Optional: Any special requests, colors you like, timeline, etc."
                     ></textarea>
                     <div class="flex gap-3 mt-6">
-                        <button type="button" onclick="prevQuestion(5)" class="text-gray-600 hover:text-gray-900 px-6 py-4 rounded-xl font-semibold transition">
+                        <button type="button" onclick="prevQuestion(5)" class="btn-secondary flex-1">
                             ← Back
                         </button>
-                        <button type="submit" class="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition shadow-lg">
-                            Submit & Build My Site 🚀
+                        <button type="submit" class="btn-primary flex-1">
+                            Submit & Build My Site
                         </button>
                     </div>
                 </div>
@@ -334,25 +473,25 @@
 
             <!-- Success State -->
             <div id="successState" class="hidden text-center py-12">
-                <div class="mb-6">
-                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-                        <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="mb-8">
+                    <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto">
+                        <svg class="w-10 h-10 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                         </svg>
                     </div>
                 </div>
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Perfect! We've Got Everything.</h2>
-                <p class="text-xl text-gray-600 mb-8">Now send me these answers so I can build your site:</p>
+                <h2 class="font-serif text-3xl md:text-4xl text-gray-900 mb-4">Perfect! We've got everything.</h2>
+                <p class="text-lg text-gray-600 mb-8">Send these answers so we can build your site:</p>
 
                 <!-- Action Buttons -->
                 <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-                    <button onclick="emailAnswers()" class="bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition shadow-lg flex items-center justify-center gap-2">
+                    <button onclick="emailAnswers()" class="btn-primary flex items-center justify-center gap-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                         </svg>
-                        Email These Answers
+                        Email Answers
                     </button>
-                    <button onclick="copyAnswers()" class="bg-gray-600 hover:bg-gray-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition shadow-lg flex items-center justify-center gap-2">
+                    <button onclick="copyAnswers()" class="bg-gray-200 hover:bg-gray-300 text-gray-900 px-8 py-3 rounded-xl font-semibold transition flex items-center justify-center gap-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                         </svg>
@@ -360,8 +499,8 @@
                     </button>
                 </div>
 
-                <div class="bg-gray-50 border border-gray-200 rounded-xl p-6 max-w-xl mx-auto">
-                    <h3 class="font-semibold text-gray-900 mb-3">📋 Your Answers</h3>
+                <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-6 max-w-xl mx-auto">
+                    <h3 class="font-semibold text-gray-900 mb-3">Your Answers</h3>
                     <div id="answersSummary" class="text-left text-sm text-gray-700 space-y-2"></div>
                 </div>
             </div>
@@ -369,8 +508,8 @@
         </div>
 
         <!-- Trust Footer -->
-        <div class="text-center mt-8 text-gray-600 text-sm">
-            <p>🔒 Your information is private and will only be used to build your website</p>
+        <div class="text-center mt-8 text-gray-500 text-sm">
+            <p>🔒 Your information is private and secure</p>
         </div>
 
     </div>
